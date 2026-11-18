@@ -1,0 +1,242 @@
+[
+ {
+  "file": "world_bc3000.geojson",
+  "year": -2999,
+  "features": 138
+ },
+ {
+  "file": "world_bc2000.geojson",
+  "year": -1999,
+  "features": 145
+ },
+ {
+  "file": "world_bc1500.geojson",
+  "year": -1499,
+  "features": 163
+ },
+ {
+  "file": "world_bc1000.geojson",
+  "year": -999,
+  "features": 163
+ },
+ {
+  "file": "world_bc700.geojson",
+  "year": -699,
+  "features": 174
+ },
+ {
+  "file": "world_bc500.geojson",
+  "year": -499,
+  "features": 189
+ },
+ {
+  "file": "world_bc400.geojson",
+  "year": -399,
+  "features": 190
+ },
+ {
+  "file": "world_bc323.geojson",
+  "year": -322,
+  "features": 149
+ },
+ {
+  "file": "world_bc300.geojson",
+  "year": -299,
+  "features": 158
+ },
+ {
+  "file": "world_bc200.geojson",
+  "year": -199,
+  "features": 183
+ },
+ {
+  "file": "world_bc100.geojson",
+  "year": -99,
+  "features": 233
+ },
+ {
+  "file": "world_bc1.geojson",
+  "year": 0,
+  "features": 442
+ },
+ {
+  "file": "world_100.geojson",
+  "year": 100,
+  "features": 440
+ },
+ {
+  "file": "world_200.geojson",
+  "year": 200,
+  "features": 354
+ },
+ {
+  "file": "world_300.geojson",
+  "year": 300,
+  "features": 466
+ },
+ {
+  "file": "world_400.geojson",
+  "year": 400,
+  "features": 367
+ },
+ {
+  "file": "world_500.geojson",
+  "year": 500,
+  "features": 205
+ },
+ {
+  "file": "world_600.geojson",
+  "year": 600,
+  "features": 204
+ },
+ {
+  "file": "world_700.geojson",
+  "year": 700,
+  "features": 253
+ },
+ {
+  "file": "world_800.geojson",
+  "year": 800,
+  "features": 225
+ },
+ {
+  "file": "world_900.geojson",
+  "year": 900,
+  "features": 244
+ },
+ {
+  "file": "world_1000.geojson",
+  "year": 1000,
+  "features": 264
+ },
+ {
+  "file": "world_1100.geojson",
+  "year": 1100,
+  "features": 235
+ },
+ {
+  "file": "world_1200.geojson",
+  "year": 1200,
+  "features": 286
+ },
+ {
+  "file": "world_1279.geojson",
+  "year": 1279,
+  "features": 247
+ },
+ {
+  "file": "world_1300.geojson",
+  "year": 1300,
+  "features": 237
+ },
+ {
+  "file": "world_1400.geojson",
+  "year": 1400,
+  "features": 233
+ },
+ {
+  "file": "world_1492.geojson",
+  "year": 1492,
+  "features": 1946
+ },
+ {
+  "file": "world_1500.geojson",
+  "year": 1500,
+  "features": 291
+ },
+ {
+  "file": "world_1530.geojson",
+  "year": 1530,
+  "features": 494
+ },
+ {
+  "file": "world_1600.geojson",
+  "year": 1600,
+  "features": 866
+ },
+ {
+  "file": "world_1650.geojson",
+  "year": 1650,
+  "features": 778
+ },
+ {
+  "file": "world_1700.geojson",
+  "year": 1700,
+  "features": 782
+ },
+ {
+  "file": "world_1715.geojson",
+  "year": 1715,
+  "features": 758
+ },
+ {
+  "file": "world_1783.geojson",
+  "year": 1783,
+  "features": 641
+ },
+ {
+  "file": "world_1800.geojson",
+  "year": 1800,
+  "features": 627
+ },
+ {
+  "file": "world_1815.geojson",
+  "year": 1815,
+  "features": 436
+ },
+ {
+  "file": "world_1880.geojson",
+  "year": 1880,
+  "features": 236
+ },
+ {
+  "file": "world_1900.geojson",
+  "year": 1900,
+  "features": 270
+ },
+ {
+  "file": "world_1914.geojson",
+  "year": 1914,
+  "features": 177
+ },
+ {
+  "file": "world_1920.geojson",
+  "year": 1920,
+  "features": 207
+ },
+ {
+  "file": "world_1930.geojson",
+  "year": 1930,
+  "features": 209
+ },
+ {
+  "file": "world_1938.geojson",
+  "year": 1938,
+  "features": 254
+ },
+ {
+  "file": "world_1945.geojson",
+  "year": 1945,
+  "features": 227
+ },
+ {
+  "file": "world_1960.geojson",
+  "year": 1960,
+  "features": 197
+ },
+ {
+  "file": "world_1994.geojson",
+  "year": 1994,
+  "features": 240
+ },
+ {
+  "file": "world_2000.geojson",
+  "year": 2000,
+  "features": 240
+ },
+ {
+  "file": "world_2010.geojson",
+  "year": 2010,
+  "features": 240
+ }
+]
