@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useApp } from './store/app'
+import { useApp, type View } from './store/app'
 import { TopNav } from './components/TopNav'
 import { Timeline } from './components/Timeline'
 import { HistoricalMap } from './components/HistoricalMap'
@@ -105,6 +105,16 @@ export default function App() {
   const { year, layers, eventFilter, settings, camera, setCamera, flyTo, select, selection, view, panelOpen, setPanelOpen, explorerCiv, narrationText, setNarration, focusCiv } = useApp()
   const [modal, setModal] = useState<'settings' | 'profile' | null>(null)
   useNativeShell(() => setModal('settings'))
+
+  // Deep link: ?view=civilizations (also ?year=-500) opens that view and year.
+  useEffect(() => {
+    const q = new URLSearchParams(location.search)
+    const v = q.get('view') as View | null
+    const views: View[] = ['explore', 'events', 'civilizations', 'compare', 'learn', 'saved', 'sources']
+    if (v && views.includes(v)) useApp.getState().setView(v)
+    const y = Number(q.get('year'))
+    if (q.has('year') && Number.isFinite(y)) useApp.getState().setYear(y)
+  }, [])
 
   useEffect(() => {
     if (!narrationText) return
