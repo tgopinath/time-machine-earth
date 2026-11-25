@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useApp } from '../../store/app'
 import { CIV_BY_ID, CIV_TYPE_LABEL } from '../../data/civilizations'
 import { EVENTS, EVENT_COLOR } from '../../data/events'
-import { civAreaSeries } from '../../lib/territoryIndex'
+import { civAreaSeries, useTerritoryIndex } from '../../lib/territoryIndex'
 import { formatYear, clampYear } from '../../lib/chrono'
 import { formatArea } from '../../lib/geo'
 import { HistoricalMap } from '../HistoricalMap'
@@ -14,7 +14,8 @@ import { runAction } from '../../lib/navigate'
 export function CivExplorer({ id }: { id: string }) {
   const { setExplorerCiv, settings } = useApp()
   const c = CIV_BY_ID.get(id)!
-  const series = useMemo(() => civAreaSeries(id), [id])
+  const idxReady = useTerritoryIndex()
+  const series = useMemo(() => civAreaSeries(id), [id, idxReady])
   const stops = useMemo(() => {
     const ys = new Set<number>(series.map((s) => s.year))
     for (const m of c.timeline) ys.add(clampYear(m.y))

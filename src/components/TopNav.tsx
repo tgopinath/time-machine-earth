@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useApp, type View } from '../store/app'
+import { useTerritoryIndex } from '../lib/territoryIndex'
 import { search, type SearchResult } from '../lib/search'
 import { runAction } from '../lib/navigate'
 
@@ -75,7 +76,8 @@ function SearchBox() {
   const [open, setOpen] = useState(false)
   const [active, setActive] = useState(0)
   const ref = useRef<HTMLInputElement>(null)
-  const results = useMemo(() => search(q), [q])
+  const idx = useTerritoryIndex()
+  const results = useMemo(() => search(q), [q, idx])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

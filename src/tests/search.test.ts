@@ -1,6 +1,10 @@
-import { describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 import { search, interpretQuestion } from '../lib/search'
 import { makeQuiz } from '../lib/quiz'
+import { loadTerritoryIndex } from '../lib/territoryIndex'
+
+
+beforeAll(() => loadTerritoryIndex())
 
 describe('natural-language search', () => {
   it('What existed in India in 500 BCE?', () => {

@@ -6,11 +6,12 @@ import { formatYear } from '../../lib/chrono'
 import { CIVILIZATIONS } from '../../data/civilizations'
 import { EVENTS } from '../../data/events'
 import { CITIES } from '../../data/cities'
-import { TERRITORY_NAMES } from '../../lib/territoryIndex'
+import { TERRITORY_NAMES, useTerritoryIndex } from '../../lib/territoryIndex'
 import { CloseButton } from '../ui'
 
 export function SourcesView() {
   const { setView } = useApp()
+  useTerritoryIndex()
   return (
     <div className="absolute inset-0 z-20 overflow-hidden bg-ivory">
       <div className="scroll-thin h-full overflow-y-auto">

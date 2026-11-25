@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useApp } from '../../store/app'
+import { BADGES } from '../../data/badges'
+import { useTerritoryIndex } from '../../lib/territoryIndex'
 import { makeQuiz, dailySeed, dailyDiscovery, type Difficulty, type QuizQuestion } from '../../lib/quiz'
 import { formatYear } from '../../lib/chrono'
 import { HistoricalMap } from '../HistoricalMap'
@@ -8,17 +10,7 @@ import { CloseButton, GhostButton, PrimaryButton, Badge } from '../ui'
 
 const POINTS: Record<Difficulty, number> = { easy: 10, medium: 20, hard: 35 }
 
-export const BADGES: { id: string; label: string; desc: string; test: (q: ReturnType<typeof useApp.getState>['quiz']) => boolean }[] = [
-  { id: 'first-answer', label: 'First Steps', desc: 'Answer your first question', test: (q) => q.answered >= 1 },
-  { id: 'ten-correct', label: 'Apprentice Historian', desc: '10 correct answers', test: (q) => q.correct >= 10 },
-  { id: 'fifty-correct', label: 'Chronicler', desc: '50 correct answers', test: (q) => q.correct >= 50 },
-  { id: 'streak-5', label: 'On a Roll', desc: '5 correct in a row', test: (q) => q.bestStreak >= 5 },
-  { id: 'cartographer', label: 'Cartographer', desc: '5 correct "which power controlled this region" answers', test: (q) => (q.byKind.region?.correct ?? 0) >= 5 },
-  { id: 'capitals', label: 'Capital Collector', desc: '5 correct capital answers', test: (q) => (q.byKind.capital?.correct ?? 0) >= 5 },
-  { id: 'borders', label: 'Border Watcher', desc: '3 correct border-change answers', test: (q) => (q.byKind.border?.correct ?? 0) >= 3 },
-  { id: 'explorer', label: 'Explorer', desc: 'Open 10 civilizations, cities or countries', test: (q) => q.explored.length >= 10 },
-  { id: 'daily', label: 'Daily Discoverer', desc: 'Complete a daily challenge', test: (q) => q.dailyDone !== null },
-]
+export { BADGES }
 
 const KIND_LABEL: Record<string, string> = { region: 'Guess the empire', capital: 'Identify the capital', period: 'Match the period', order: 'Timeline challenge', border: 'Border change' }
 
@@ -30,7 +22,8 @@ export function LearnView() {
   const [i, setI] = useState(0)
   const [picked, setPicked] = useState<number | null>(null)
   const [score, setScore] = useState(0)
-  const questions = useMemo(() => (seed === null ? [] : makeQuiz(seed, difficulty, daily ? 5 : 8)), [seed, difficulty, daily])
+  const idx = useTerritoryIndex()
+  const questions = useMemo(() => (seed === null ? [] : makeQuiz(seed, difficulty, daily ? 5 : 8)), [seed, difficulty, daily, idx])
   const q: QuizQuestion | undefined = questions[i]
   const today = new Date().toISOString().slice(0, 10)
   const discovery = dailyDiscovery()

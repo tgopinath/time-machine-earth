@@ -8,12 +8,12 @@ import { REGIONS, SITES, dataNoteFor } from '../data/atlas'
 import { DATASETS, wp } from '../data/sources'
 import { formatYear, eraName, clampYear } from '../lib/chrono'
 import { snapshotFor } from '../lib/snapshots'
-import { entriesAt, indexEntry, civAreaSeries, nameAreaSeries, TERRITORY_INDEX } from '../lib/territoryIndex'
+import { entriesAt, indexEntry, civAreaSeries, nameAreaSeries, TERRITORY_INDEX, useTerritoryIndex } from '../lib/territoryIndex'
 import { classifyTerritory } from '../lib/classify'
 import { formatArea, inBbox } from '../lib/geo'
 import { PRECISION_LABEL } from '../lib/colors'
 import { runAction } from '../lib/navigate'
-import { eventWindow } from './HistoricalMap'
+import { eventWindow } from '../lib/eventWindow'
 import { AreaChart } from './AreaChart'
 import { Badge, CloseButton, KV, Missing, PrimaryButton, SaveButton, Section, Sources, GhostButton } from './ui'
 
@@ -68,10 +68,11 @@ function Header({ eyebrow, title, sub, badges }: { eyebrow: string; title: strin
 function YearOverview() {
   const { year, select, fly } = useApp()
   const snap = snapshotFor(year)
+  const idx = useTerritoryIndex()
   const civs = useMemo(() => civsAt(year), [year])
   const w = eventWindow(year)
   const events = useMemo(() => EVENTS.filter((e) => e.y - w <= year && (e.yEnd ?? e.y) + w >= year).sort((a, b) => Math.abs(a.y - year) - Math.abs(b.y - year)).slice(0, 8), [year, w])
-  const entries = useMemo(() => entriesAt(snap.snapshot.year), [snap.snapshot.year])
+  const entries = useMemo(() => entriesAt(snap.snapshot.year), [snap.snapshot.year, idx])
   const precise = entries.filter((x) => x.e[3] >= 2).length
   return (
     <div>
@@ -134,6 +135,7 @@ function YearOverview() {
 // ------------------------------------------------------------------ territory
 function TerritoryPanel({ name, snapYear }: { name: string; snapYear: number }) {
   const { year, settings, select, fly } = useApp()
+  useTerritoryIndex()
   const e = indexEntry(name, snapYear)
   const subj = e?.[5] ?? null
   const civ = civForFeature(name, subj, snapYear)
@@ -212,7 +214,8 @@ function TerritoryPanel({ name, snapYear }: { name: string; snapYear: number }) 
 function CivPanel({ id }: { id: string }) {
   const { year, setYear, settings, setExplorerCiv, fly } = useApp()
   const c = CIV_BY_ID.get(id)
-  const series = useMemo(() => civAreaSeries(id), [id])
+  const idx = useTerritoryIndex()
+  const series = useMemo(() => civAreaSeries(id), [id, idx])
   if (!c) return <Missing>Unknown civilization.</Missing>
   const exists = year >= c.start && year <= c.end
   const ref = exists ? year : Math.min(Math.max(year, c.start), c.end)
@@ -459,8 +462,9 @@ function CountryPanel({ id }: { id: string }) {
 function RegionPanel({ id }: { id: string }) {
   const { year, select, settings } = useApp()
   const r = REGIONS.find((x) => x.id === id)
+  const idx = useTerritoryIndex()
   const snapY = snapshotFor(year).snapshot.year
-  const entries = useMemo(() => (r ? entriesAt(snapY).filter((x) => inBbox(x.e[1], x.e[2], r.bbox)).sort((a, b) => b.e[4] - a.e[4]) : []), [r, snapY])
+  const entries = useMemo(() => (r ? entriesAt(snapY).filter((x) => inBbox(x.e[1], x.e[2], r.bbox)).sort((a, b) => b.e[4] - a.e[4]) : []), [r, snapY, idx])
   if (!r) return <Missing>Unknown region.</Missing>
   const civs = civsAt(year).filter((c) => c.capitals.some((k) => year >= k.from && year <= k.to && inBbox(k.lon, k.lat, r.bbox)) || inBbox(c.center[0], c.center[1], r.bbox))
   const title = r.names[0].replace(/\b\w/g, (m) => m.toUpperCase())

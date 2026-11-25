@@ -12,6 +12,7 @@ import type { LayerId, Selection, Camera } from '../store/app'
 import type { BorderComparison } from '../lib/geo'
 import type { EventType } from '../data/types'
 import { classifyTerritory } from '../lib/classify'
+import { eventWindow } from '../lib/eventWindow'
 
 // The worker bundle is self-contained and copied verbatim to public/ (see the copy-worker
 // script) so the dev server does not inject its client into it.
@@ -20,15 +21,7 @@ maplibregl.setWorkerUrl(`${import.meta.env.BASE_URL}maplibre-gl-worker.mjs`)
 const EMPTY: FeatureCollection = { type: 'FeatureCollection', features: [] }
 const FONT = 'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf'
 
-/** How far around the selected year an event marker stays visible. */
-export function eventWindow(y: number): number {
-  if (y < -1000) return 300
-  if (y < 0) return 150
-  if (y < 1000) return 100
-  if (y < 1500) return 50
-  if (y < 1800) return 30
-  return 15
-}
+export { eventWindow }
 
 /** A tiny pub/sub that keeps several maps' cameras in lockstep. */
 export class SyncGroup {

@@ -1,6 +1,6 @@
 import { useApp } from '../store/app'
 import { Modal, GhostButton, Badge } from './ui'
-import { BADGES } from './views/LearnView'
+import { BADGES } from '../data/badges'
 import { clear as idbClear } from 'idb-keyval'
 import { useState } from 'react'
 

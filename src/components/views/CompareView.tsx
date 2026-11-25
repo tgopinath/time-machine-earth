@@ -9,7 +9,7 @@ import { CIVILIZATIONS, CIV_BY_ID, civsAt } from '../../data/civilizations'
 import { eventsBetween, EVENT_COLOR } from '../../data/events'
 import { CITIES } from '../../data/cities'
 import { REGIONS } from '../../data/atlas'
-import { diffSnapshots, entriesAt, TERRITORY_INDEX, TERRITORY_NAMES } from '../../lib/territoryIndex'
+import { diffSnapshots, entriesAt, TERRITORY_INDEX, TERRITORY_NAMES, useTerritoryIndex } from '../../lib/territoryIndex'
 import { runAction } from '../../lib/navigate'
 import { Badge, CloseButton, SaveButton } from '../ui'
 
@@ -44,6 +44,7 @@ function YearField({ value, onChange, label }: { value: number; onChange: (y: nu
 export function CompareView() {
   const { compareYears, setCompare, compareEntity, compareMode, setView, layers, settings, camera } = useApp()
   const [a, b] = compareYears
+  const idx = useTerritoryIndex()
   const [layout, setLayout] = useState<Layout>(compareMode === 'borders' ? 'diff' : 'side')
   const [region, setRegion] = useState<string>('world')
   const [swipe, setSwipe] = useState(50)
@@ -117,7 +118,7 @@ export function CompareView() {
     const countA = entriesAt(snapA).filter((x) => inR(x.name, snapA)).length
     const countB = entriesAt(snapB).filter((x) => inR(x.name, snapB)).length
     return { appeared, vanished, ended, began, cityChanges, countA, countB }
-  }, [a, b, snapA, snapB, region])
+  }, [a, b, snapA, snapB, region, idx])
 
   const mapLayers = layers.filter((l) => l !== 'events' && l !== 'battles')
   const focusCiv = compareMode === 'borders' && civ ? civ.id : null
@@ -310,6 +311,7 @@ function ChangeList({ title, items, tone }: { title: string; items: string[]; to
 
 function EntityPicker({ value, onChange }: { value: EntityRef; onChange: (e: EntityRef) => void }) {
   const [text, setText] = useState(value.kind === 'name' ? value.name : '')
+  useTerritoryIndex()
   const civs = CIVILIZATIONS.filter((c) => c.matchNames.length || c.matchSubjects?.length)
   return (
     <div className="flex items-center gap-2 text-[12px] text-muted">

@@ -1,11 +1,48 @@
-import indexJson from '../data/generated/territory-index.json'
+import { useSyncExternalStore } from 'react'
 import { CIV_BY_ID } from '../data/civilizations'
 
 /** [snapshotYear, lon, lat, borderPrecision, areaKm2, subjectTo] */
 export type IndexEntry = [number, number, number, number, number, string | null]
 
-export const TERRITORY_INDEX = indexJson as unknown as Record<string, IndexEntry[]>
-export const TERRITORY_NAMES = Object.keys(TERRITORY_INDEX)
+/**
+ * The territory index (~360 KB) is loaded on its own after the first paint
+ * instead of being inlined in the main bundle. Both exports are filled in place
+ * once it arrives; components that read them call useTerritoryIndex() so they
+ * re-render when it is ready.
+ */
+export const TERRITORY_INDEX: Record<string, IndexEntry[]> = {}
+export const TERRITORY_NAMES: string[] = []
+
+let ready = false
+let loading: Promise<void> | null = null
+const listeners = new Set<() => void>()
+
+export function loadTerritoryIndex(): Promise<void> {
+  if (!loading) {
+    loading = import('../data/generated/territory-index.json').then((m) => {
+      const json = (m.default ?? m) as unknown as Record<string, IndexEntry[]>
+      Object.assign(TERRITORY_INDEX, json)
+      TERRITORY_NAMES.push(...Object.keys(json))
+      ready = true
+      listeners.forEach((l) => l())
+    })
+    loading.catch(() => { loading = null })
+  }
+  return loading
+}
+
+/** Re-render the caller once the territory index has loaded (starts loading it if needed). */
+export function useTerritoryIndex(): boolean {
+  return useSyncExternalStore(
+    (cb) => {
+      listeners.add(cb)
+      void loadTerritoryIndex()
+      return () => listeners.delete(cb)
+    },
+    () => ready,
+    () => ready,
+  )
+}
 
 export function entriesAt(year: number): { name: string; e: IndexEntry }[] {
   const out: { name: string; e: IndexEntry }[] = []

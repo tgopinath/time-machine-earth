@@ -1,12 +1,15 @@
-import { describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 import { snapshotFor, SNAPSHOTS, nextSnapshot, prevSnapshot } from '../lib/snapshots'
 import { civsAt, civForFeature, CIVILIZATIONS } from '../data/civilizations'
 import { eventsBetween } from '../data/events'
 import { toAstro } from '../lib/chrono'
-import { entriesAt, civAreaSeries, TERRITORY_INDEX } from '../lib/territoryIndex'
+import { entriesAt, civAreaSeries, TERRITORY_INDEX, loadTerritoryIndex } from '../lib/territoryIndex'
 import { classifyTerritory } from '../lib/classify'
 
 const ids = (y: number) => civsAt(y).map((c) => c.id)
+
+
+beforeAll(() => loadTerritoryIndex())
 
 describe('snapshot selection', () => {
   it('never uses a snapshot later than the requested year', () => {
