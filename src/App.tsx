@@ -54,7 +54,7 @@ function usePlayback() {
   }, [playing])
 }
 
-/** Narrate documented changes whenever playback crosses into a new snapshot, and prefetch the next one. */
+/** Narrate documented changes whenever playback crosses into a new snapshot, and (while playing) prefetch the next one. */
 function useNarration() {
   const year = useApp((s) => s.year)
   const playing = useApp((s) => s.playing)
@@ -64,7 +64,8 @@ function useNarration() {
   useEffect(() => {
     const snap = snapshotFor(year).snapshot.year
     const nxt = nextSnapshot(year)
-    if (nxt) loadSnapshot(nxt).catch(() => {})
+    // prefetch the next era only while playing, so a first visit downloads just the era on screen
+    if (nxt && playing) loadSnapshot(nxt).catch(() => {})
     if (snap !== prevSnap.current) {
       if (playing && settings.narration) {
         const text = narrateTransition(prevSnap.current, snap)
